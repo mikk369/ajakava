@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajakava Genereerimine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Võistluse Ajakava Genereerimine</h1>
+    <form id="scheduleForm">
+        <!-- Single start time field -->
+        <label for="startTime">Ajakava algusaeg:</label>
+        <input type="time" id="startTime" required>
+
+        <h2>Sisestage raja info</h2>
+            <!-- Formi sisu genereeritakse siia -->
+
+        
+        
+    </form>
+    <button id="addTrackButton">Lisa rada</button>
+    <button type="button" onclick="generateSchedule()">Genereeri Ajakava</button>
+    
+    <h2>Ajakava</h2>
+    <table id="scheduleTable">
+        <thead>
+            <tr>
+                <th>Aeg</th>
+                <th>Tegevus</th>
+            </tr>
+        </thead>
+        <tbody id="scheduleBody">
+            <!-- Ajakava sisu genereeritakse siia -->
+        </tbody>
+    </table>
+    <button type="button" onclick="exportToPDF()">Ekspordi PDF-ina</button>
+    <button type="button" onclick="exportToXML()">Ekspordi XML-ina</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
