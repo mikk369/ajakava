@@ -77,10 +77,6 @@ function generateSchedule() {
 
         const totalCompetitors = group1 + group2 + group3 + group4 + group5;
 
-
-        // Add header row for this track
-        // addHeaderRow(scheduleContainer, "Raja Tüüp:" + " " + trackType);
-
         // Track construction
         addRow(scheduleContainer, currentTime, formatActivity(competitionClass, trackType, 'Raja ehitus'));
         currentTime.setMinutes(currentTime.getMinutes() + buildTime);
@@ -133,28 +129,40 @@ function exportToPDF() {
     win.print();
 }
 
-function exportToXML() {
-    const rows = document.querySelectorAll('#scheduleTable tr');
-    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<schedule>\n';
+function exportToExcel() {
+    // Get the table data
+    const table = document.getElementById('scheduleTable');
+    const rows = table.querySelectorAll('tr');
 
+    // Prepare the data for Excel
+    const data = [];
+
+    // Add the header row
+    const headerRow = [];
+    const headers = table.querySelectorAll('thead th');
+    headers.forEach(header => {
+        headerRow.push(header.textContent);
+    });
+    data.push(headerRow);
+
+    // Add the table rows
     rows.forEach(row => {
+        const rowData = [];
         const cells = row.querySelectorAll('td');
-        if (cells.length > 0) {
-            xml += '  <event>\n';
-            xml += `    <time>${cells[0].textContent}</time>\n`;
-            xml += `    <activity>${cells[1].textContent}</activity>\n`;
-            xml += '  </event>\n';
+        cells.forEach(cell => {
+            rowData.push(cell.textContent);
+        });
+        if (rowData.length > 0) {
+            data.push(rowData);
         }
     });
 
-    xml += '</schedule>';
+    // Create a new workbook and add the data to a sheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Ajakava');
 
-    const blob = new Blob([xml], { type: 'application/xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'schedule.xml';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    // Export the workbook as an Excel file
+    XLSX.writeFile(wb, 'Ajakava.xlsx');
 }
+
