@@ -48,6 +48,8 @@ function addTrackSection() {
 function generateSchedule() {
     const scheduleContainer = document.getElementById('scheduleBody');
     scheduleContainer.innerHTML = ''; // Clear previous schedule
+
+    let totalCompetitorsSum = 0;
     
     // Get the start time from the single input field
     const startTimeInput = document.getElementById("startTime").value;
@@ -77,6 +79,8 @@ function generateSchedule() {
 
         const totalCompetitors = group1 + group2 + group3 + group4 + group5;
 
+        totalCompetitorsSum += totalCompetitors 
+
         // Track construction
         addRow(scheduleContainer, currentTime, formatActivity(competitionClass, trackType, 'Raja ehitus'));
         currentTime.setMinutes(currentTime.getMinutes() + buildTime);
@@ -91,7 +95,9 @@ function generateSchedule() {
         // Last dog performance end
         currentTime.setMinutes(currentTime.getMinutes() + (totalCompetitors * runTime));
         addRow(scheduleContainer, currentTime, formatActivity(competitionClass, trackType, 'Viimase koera sooritus lõpeb'));
+        addCompetitorsRow(scheduleContainer, howManyCompetitors(totalCompetitors, 'Võistlejaid kokku'));
     }
+    addFooterRow(scheduleContainer, `Kokku ${totalCompetitorsSum} võistlejat`)
 }
 
 function addRow(tableBody, time, activity, trackType = null) {
@@ -112,11 +118,39 @@ function formatActivity(competitionClass, trackType, activity) {
     return `${competitionClass} - ${trackType} ${activity}`
 }
 
+function howManyCompetitors(competitorCount, activity) {
+    return `${activity}: ${competitorCount}`
+}
+
+function addCompetitorsRow(tableBody, activity) {
+    const row = document.createElement('tr');
+    const activityCell = document.createElement('td');
+    
+    activityCell.textContent = activity;
+    activityCell.colSpan = 2;
+
+    row.appendChild(activityCell);
+    tableBody.appendChild(row);
+}
+
+function addFooterRow(tableBody, totalText) {
+    const footerRow = document.createElement('tr');
+    const footerCell = document.createElement('td');
+
+    footerCell.textContent = totalText;
+    footerCell.colSpan = 2;
+    footerCell.style.fontWeight = 'bold';
+
+    footerRow.appendChild(footerCell);
+    tableBody.appendChild(footerRow);
+}
+
 function exportToPDF() {
     const table = document.getElementById('scheduleTable').outerHTML;
     const style = `<style>
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 8px; text-align: left; border: 1px solid #ccc; }
+        tr:nth-child(even) { background-color: #d1d1d1; }
     </style>`;
     const win = window.open('', '', 'height=1000,width=1500');
     win.document.write('<html><head>');
@@ -165,4 +199,3 @@ function exportToExcel() {
     // Export the workbook as an Excel file
     XLSX.writeFile(wb, 'Ajakava.xlsx');
 }
-

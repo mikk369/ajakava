@@ -19,8 +19,8 @@
         
         
     </form>
-    <button id="addTrackButton">Lisa rada</button>
-    <button type="button" onclick="generateSchedule()">Genereeri Ajakava</button>
+    <button class="addTrack" id="addTrackButton">Lisa rada</button>
+    <button class="generateSchedule" type="button" onclick="generateSchedule()">Genereeri Ajakava</button>
     
     <h2>Ajakava</h2>
     <table id="scheduleTable">
@@ -34,8 +34,8 @@
             <!-- Ajakava sisu genereeritakse siia -->
         </tbody>
     </table>
-    <button type="button" onclick="exportToPDF()">Ekspordi PDF-ina</button>
-    <button type="button" onclick="exportToExcel()">Ekspordi XLSX-ina</button>
+    <button class="exportPdf" type="button" onclick="exportToPDF()">Ekspordi PDF-ina</button>
+    <button class="exportXls" type="button" onclick="exportToExcel()">Ekspordi XLSX-ina</button>
 
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>

@@ -1,4 +1,4 @@
-/* styles.css */
+/* GENERAL STYLES */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -56,4 +56,29 @@ table, th, td {
 th, td {
     padding: 10px;
     text-align: left;
+}
+
+/* COLOR STYLES */
+.addTrack {
+    background-color: #2b8a3e;
+    color: #fff;
+}
+
+.generateSchedule {
+    background-color: #1c7ed6;
+    color: #fff;
+}
+
+.exportPdf {
+    background-color: orangered;
+    color: #fff;
+}
+
+.exportXls {
+    background-color: #2b8a3e;
+    color: #fff;
+}
+
+#scheduleBody tr:nth-child(even) {
+    background-color: #d1d1d1;
 }
