@@ -10,9 +10,6 @@ function addTrackSection() {
     trackSection.className = 'track-section';
     trackSection.innerHTML = `
         <h3>Rada ${trackCount}</h3>
-
-        <label for="trackType${trackCount}">Raja tüüp:</label>
-        <input type="text" id="trackType${trackCount}" name="trackType${trackCount}" required>
         
         <label for="competitionClass${trackCount}">Võistlusklass:</label>
         <input type="text" id="competitionClass${trackCount}" name="competitionClass${trackCount}" required>
@@ -65,7 +62,6 @@ function generateSchedule() {
     let currentTime = new Date(startTime.getTime());
 
     for (let i = 1; i <= trackCount; i++) {
-        const trackType = document.getElementById(`trackType${i}`).value;
         const competitionClass = document.getElementById(`competitionClass${i}`).value;
         const buildTime = parseInt(document.getElementById(`buildTime${i}`).value);
         const inspectionTime = parseInt(document.getElementById(`inspectionTime${i}`).value);
@@ -82,19 +78,19 @@ function generateSchedule() {
         totalCompetitorsSum += totalCompetitors 
 
         // Track construction
-        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, trackType, 'Raja ehitus'));
+        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, 'Raja ehitus'));
         currentTime.setMinutes(currentTime.getMinutes() + buildTime);
 
         // Track inspection
-        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, trackType, 'Rajaga tutvumine'));
+        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, 'Rajaga tutvumine'));
         currentTime.setMinutes(currentTime.getMinutes() + inspectionTime);
 
         // First dog performance
-        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, trackType, 'Esimese koera sooritus algab'));
+        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, 'Esimese koera sooritus algab'));
 
         // Last dog performance end
         currentTime.setMinutes(currentTime.getMinutes() + (totalCompetitors * runTime));
-        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, trackType, 'Viimase koera sooritus lõpeb'));
+        addRow(scheduleContainer, currentTime, formatActivity(competitionClass, 'Viimase koera sooritus lõpeb'));
         addCompetitorsRow(scheduleContainer, howManyCompetitors(totalCompetitors, 'Võistlejaid kokku'));
     }
     addFooterRow(scheduleContainer, `Kokku ${totalCompetitorsSum} võistlejat`)
@@ -106,7 +102,7 @@ function addRow(tableBody, time, activity, trackType = null) {
     const activityCell = document.createElement('td');
     
     timeCell.textContent = time.toLocaleTimeString('et-EE', { hour: '2-digit', minute: '2-digit' });
-    activityCell.textContent = trackType ? `${trackType} - ${activity}` : activity;
+    activityCell.textContent = activity;
     
     row.appendChild(timeCell);
     row.appendChild(activityCell);
@@ -114,8 +110,8 @@ function addRow(tableBody, time, activity, trackType = null) {
     tableBody.appendChild(row);
 }
 
-function formatActivity(competitionClass, trackType, activity) {
-    return `${competitionClass} - ${trackType} ${activity}`
+function formatActivity(competitionClass, activity) {
+    return `${competitionClass} - ${activity}`
 }
 
 function howManyCompetitors(competitorCount, activity) {
